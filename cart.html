@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart | Dive.In</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a href="index.html" style="font-size: 22; display:inline-block; margin:24px 0 0 32px;">← Store</a>
+  <div class="cart-container">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <button onclick="checkout()" style="margin-top:28px;" class="cart-btn">Checkout</button>
+  </div>
+  <script>
+
+    const games = [
+      {
+        id: 1,
+        name: "Valorant",
+        price: 499,
+        image: "images/game1.jpg"
+      },
+      {
+        id: 2,
+        name: "Red Dead Redemption 2",
+        price: 2199,
+        image: "images/game2.jpg"
+      },
+      {
+        id: 3,
+        name: "Grand Theft Auto VI",
+        price: 8199,
+        image: "images/game3.jpg"
+      },
+      {
+        id: 4,
+        name: "Cyberpunk 2077",
+        price: 2999,
+        image: "images/game4.jpg"
+      },
+      {
+        id: 5,
+        name: "Hitman World of Assassinations",
+        price: 1600,
+        image: "images/game5.jpg"
+      },
+      {
+        id: 6,
+        name: "Black Myth : Wukong",
+        price: 4599,
+        image: "images/game6.jpg"
+      },
+      {
+        id: 7,
+        name: "Ghost of Tsushima",
+        price: 3999,
+        image: "images/game7.jpg"
+      }
+      ,
+      {
+        id: 8,
+        name: "The Witcher 3 : Wild Hunt",
+        price: 1699,
+        image: "images/game8.jpg"
+      },
+      {
+        id: 9,
+        name: "UNCHARTED 4: A Thief's End",
+        price: 2499,
+        image: "images/game9.jpg"
+      },
+      {
+        id: 10,
+        name: "Assassin’s Creed IV Black Flag",
+        price: 1999,
+        image: "images/game10.jpg"
+      },
+      {
+        id: 11,
+        name: "Batman  : Arkham Knight",
+        price: 1899,
+        image: "images/game11.jpg"
+      },
+      {
+        id: 12,
+        name: "The Last Of Us Part 1",
+        price: 3999,
+        image: "images/game12.jpg"
+      },
+      {
+        id: 13,
+        name: "Marvel's Spider-Man Remastered",
+        price: 3999,
+        image: "images/game13.jpg"
+      },
+      {
+        id: 14,
+        name: "God Of War",
+        price: 3299,
+        image: "images/game14.jpg"
+      },
+      {
+        id: 15,
+        name: "Elden Ring",
+        price: 3599,
+        image: "images/game15.jpg"
+      },
+      {
+        id: 16,
+        name: "Detroit: Become Human",
+        price: 1999,
+        image: "images/game16.jpg"
+      },
+      {
+        id: 17,
+        name: "Hogwarts Legacy",
+        price: 3999,
+        image: "images/game17.jpg"
+      },
+      {
+        id: 18,
+        name: "Silent Hill 2",
+        price: 2800,
+        image: "images/game18.jpg"
+      },
+      {
+        id: 19,
+        name: "Assassin's Creed Syndicate",
+        price: 1999,
+        image: "images/game19.jpg"
+      },
+      {
+        id: 20,
+        name: "Marvel Rivals",
+        price: 499,
+        image: "images/game20.jpg"
+      }
+      
+    ];
+
+    function removeItem(gameId){
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      cart = cart.filter(id => id !== gameId);
+      sessionStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function renderCart() {
+      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+      let container = document.getElementById('cart-items');
+      container.innerHTML = "";
+      if(cart.length === 0){
+        container.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+      let total = 0;
+      cart.forEach(gameId => {
+        const game = games.find(g => g.id === gameId);
+        if(game){
+          total += game.price;
+          container.innerHTML += `
+            <div class="cart-item">
+              <img src="${game.image}" alt="${game.name}">
+              <strong>${game.name}</strong>
+              <span style="margin-left:18px;">₹${game.price}</span>
+              <button class="remove-btn details-btn" onclick="removeItem(${game.id})">Remove</button>
+            </div>
+          `;
+        }
+      });
+      container.innerHTML += `<hr><h3>Total: ₹${total}</h3>`;
+    }
+
+    function checkout(){
+      sessionStorage.removeItem('cart');
+      alert("Thanks for purchasing! Your cart has been cleared.");
+      renderCart();
+    }
+
+    window.onload = renderCart;
+  </script>
+</body>
+</html>
